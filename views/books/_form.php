@@ -22,17 +22,20 @@
     <?= $form->field($model, 'imageFile')->widget(FileInput::classname(), [
       'options'       => ['accept' => 'image/*'],
       'pluginOptions' => [
-        'showPreview'    => true,
-        'showCaption'    => true,
-        'showRemove'     => true,
-        'showUpload'     => false,
-        'initialPreview' => [
+        'showPreview'      => true,
+        'showCaption'      => true,
+        'showRemove'       => false,
+        'showUpload'       => false,
+        'overwriteInitial' => true,
+        'initialCaption'   => $model->preview_image ? $model->preview_image : "",
+        'initialPreview'   => [
           $model->preview_image ? Html::img($model->preview_image,
             ['class' => 'file-preview-image', 'alt' => $model->name, 'title' => $model->name]) : null,
         ],
       ],
-
     ]); ?>
+
+
 
     <?= $form->field($model, 'author_id')->dropDownList($authors) ?>
 

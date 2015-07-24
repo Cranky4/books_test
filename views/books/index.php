@@ -73,7 +73,7 @@
           'content'   => function ($model, $key, $index, $column) {
               if ($model->preview_image) {
                   return Html::a(Html::img($model->preview_image, [
-                    'class' => 'img img-thumbnail smallimage js_fancybox',
+                    'class' => 'img img-thumbnail smallimage',
                     'alt'   => $model->name
                   ]), $model->preview_image, [
                     'rel' => 'book_preview',

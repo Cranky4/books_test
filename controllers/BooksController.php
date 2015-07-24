@@ -100,10 +100,15 @@
             $model = new Books();
 
             if ($model->load(Yii::$app->request->post())) {
-                $model->imageFile = UploadedFile::getInstance($model, 'imageFile');
-                if ($path = $model->upload()) {
-                    $model->preview = $path;
+                $image = $model->uploadImage();
+                if ($image !== false) {
+                    $path = $model->getImageFile();
+                    $image->saveAs($path);
                 }
+
+//                if ($path = $model->upload()) {
+//                    $model->preview_image = $path;
+//                }
                 $model->save();
                 return $this->redirect(['index']);
             } else {
@@ -125,14 +130,21 @@
         public function actionUpdate($id)
         {
             $model = $this->findModel($id);
+            $oldFilePath = $model->preview_image;
 
             if ($model->load(Yii::$app->request->post())) {
-                $model->imageFile = UploadedFile::getInstance($model, 'imageFile');
-                if (($path = $model->upload()) || $path != $model->preview_image) {
-                    $model->preview_image = $path;
+                $image = $model->uploadImage();
+                if ($image === false) {
+                    $model->preview_image = $oldFilePath;
                 }
-                $model->save();
+                if ($model->save()) {
+                    if ($image !== false) { // delete old and overwrite
+                        $path = $model->getImageFile();
+                        $image->saveAs($path);
+                    }
+                }
 
+                //сохранение параметров фильтра
                 $filterParams = $_GET;
                 if (ArrayHelper::keyExists('id', $filterParams)) {
                     unset($filterParams['id']);
@@ -161,7 +173,10 @@
          */
         public function actionDelete($id)
         {
-            $this->findModel($id)->delete();
+            $model = $this->findModel($id);
+            if ($model->delete()) {
+                $model->deleteImage();
+            }
 
             return $this->redirect(['index']);
         }

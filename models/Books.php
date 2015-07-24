@@ -50,7 +50,7 @@
                 'pattern' => '/^\d{2}\.\d{2}\.\d{4}$/',
                 'message' => 'Неверный фомат даты (дд.мм.гггг)'
               ],
-              [['imageFile'], 'file', 'skipOnEmpty' => false, 'extensions' => 'png, jpg'],
+              [['imageFile'], 'file', 'skipOnEmpty' => true, 'extensions' => 'png, jpg'],
             ];
         }
 
@@ -60,16 +60,16 @@
         public function attributeLabels()
         {
             return [
-              'id'          => 'ID',
-              'name'        => 'Название',
-              'date_create' => 'Дата создания',
-              'date_update' => 'Дата изменения',
-              'date'        => 'Дата выпуска',
-              '_date'       => 'Дата выпуска',
-              'preview_image'     => 'Картинка',
-              'author_id'   => 'Ид автора',
-              'authorName'  => 'Автор',
-              'imageFile'   => 'Картинка'
+              'id'            => 'ID',
+              'name'          => 'Название',
+              'date_create'   => 'Дата создания',
+              'date_update'   => 'Дата изменения',
+              'date'          => 'Дата выпуска',
+              '_date'         => 'Дата выпуска',
+              'preview_image' => 'Картинка',
+              'author_id'     => 'Ид автора',
+              'authorName'    => 'Автор',
+              'imageFile'     => 'Картинка'
             ];
         }
 
@@ -137,10 +137,30 @@
             return $this->author->getFullName();
         }
 
+        public function getImageFile()
+        {
+            $uploadPath = __DIR__ . '/../web';
+            return isset($this->preview_image) ? $uploadPath . $this->preview_image : null;
+        }
+
+        public function uploadImage()
+        {
+            $image = UploadedFile::getInstance($this, 'imageFile');
+            $file_name = Yii::$app->security->generateRandomString();
+            $webpath = '/imgs/' . $file_name . '.' . $image->extension;
+
+            if (empty($image)) {
+                return false;
+            }
+            $this->preview_image = $webpath;
+
+            return $image;
+        }
+
         public function upload()
         {
             if ($this->validate('imageFile')) {
-                if(!$this->imageFile->baseName) {
+                if (!$this->imageFile->baseName) {
                     return null;
                 }
 
@@ -158,5 +178,25 @@
             } else {
                 return false;
             }
+        }
+
+        public function deleteImage()
+        {
+            $file = $this->getImageFile();
+
+            // check if file exists on server
+            if (empty($file) || !file_exists($file)) {
+                return false;
+            }
+
+            // check if uploaded file can be deleted on server
+            if (!unlink($file)) {
+                return false;
+            }
+
+            // if deletion successful, reset your file attributes
+            $this->preview_image = null;
+
+            return true;
         }
     }

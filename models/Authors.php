@@ -57,7 +57,11 @@
         public static function getAuthorsList($withEmpty = false)
         {
             $authors = self::find()->all();
-            return ArrayHelper::map($authors,'id', 'last_name');
+            $listdata = ArrayHelper::map($authors,'id', 'last_name');
+            if($withEmpty) {
+                $listdata = ArrayHelper::merge([0=>""], $listdata);
+            }
+            return $listdata;
         }
 
         public function getFullName()

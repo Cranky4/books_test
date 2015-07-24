@@ -37,18 +37,18 @@
         'date_create:datetime',
         'date_update:datetime',
         'date:datetime',
-        [
-          'attribute' => 'preview_image',
-          'content'   => function ($model, $key, $index, $column) {
-              if ($model->preview_image) {
-                  return Html::img($model->preview_image, [
-                    'class' => 'img img-thumbnail',
-                    'alt'   => $model->name
-                  ]);
-              }
-              return "";
-          }
-        ],
+//        [
+//          'attribute' => 'preview_image',
+//          'content'   => function ($model, $key, $index, $column) {
+//              if ($model->preview_image) {
+//                  return Html::img($model->preview_image, [
+//                    'class' => 'img img-thumbnail',
+//                    'alt'   => $model->name
+//                  ]);
+//              }
+//              return "";
+//          }
+//        ],
         'authorName',
       ],
     ]) ?>

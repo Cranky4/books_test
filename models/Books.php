@@ -50,7 +50,7 @@
                 'pattern' => '/^\d{2}\.\d{2}\.\d{4}$/',
                 'message' => 'Неверный фомат даты (дд.мм.гггг)'
               ],
-              [['imageFile'], 'file', 'skipOnEmpty' => true, 'extensions' => 'png, jpg'],
+              [['imageFile'], 'file', 'skipOnEmpty' => false, 'extensions' => 'png, jpg'],
             ];
         }
 

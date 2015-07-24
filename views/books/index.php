@@ -96,7 +96,9 @@
                 ]);
             },
             'update' => function ($url, $model) {
-                $url .= "?".http_build_query($_GET);
+                if($filterParams = $_GET) {
+                    $url .= "?".http_build_query($_GET);
+                }
                 return Html::a('<span class="glyphicon glyphicon-pencil"></span>', $url, [
                   'title' => "Редактирование",
                 ]);

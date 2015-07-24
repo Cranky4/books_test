@@ -10,11 +10,11 @@ class m150724_061338_init_tables extends Migration
         $this->createTable('books', [
           'id' => Schema::TYPE_PK,
           'name' => Schema::TYPE_STRING . ' NOT NULL COMMENT "Название"',
-          'date_create' => Schema::TYPE_INTEGER , 'NOT NULL COMMENT "Дата создания"',
-          'date_update' => Schema::TYPE_INTEGER , 'DEFAULT NULL COMMENT "Дата редактирования"',
-          'date' => Schema::TYPE_INTEGER , 'NOT NULL COMMENT "Дата публикации"',
+          'date_create' => Schema::TYPE_INTEGER . ' NOT NULL COMMENT "Дата создания"',
+          'date_update' => Schema::TYPE_INTEGER .  ' DEFAULT NULL COMMENT "Дата редактирования"',
+          'date' => Schema::TYPE_INTEGER . ' NOT NULL COMMENT "Дата публикации"',
           'preview_image' => Schema::TYPE_TEXT. ' COMMENT "Картинка"',
-          'author_id' => Schema::TYPE_INTEGER . 'DEFAULT NULL COMMENT "Ид автора"'
+          'author_id' => Schema::TYPE_INTEGER . ' DEFAULT NULL COMMENT "Ид автора"'
         ], 'ENGINE=InnoDB  DEFAULT CHARSET=utf8');
 
         $this->createIndex('author_id', 'books', 'author_id');
@@ -36,7 +36,6 @@ class m150724_061338_init_tables extends Migration
             'date' => 838193663,
             'date_create' => time(),
             'author_id' => 1,
-            ''
         ]);
     }
 

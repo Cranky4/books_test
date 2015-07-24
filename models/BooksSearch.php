@@ -100,7 +100,6 @@
               'date_create' => $this->date_create,
               'date_update' => $this->date_update,
               'date'        => $this->date,
-              'author_id'   => $this->author_id,
             ]);
 
 //            $query->andFilterWhere(['like', 'name', $this->name])->andFilterWhere([
@@ -109,6 +108,14 @@
 //              $this->preview_image
 //            ]);
 
+            if ($this->author_id) {
+                $query->andFilterWhere(['author_id' => $this->author_id]);
+            }
+
+            if ($this->name) {
+                $query->andFilterWhere(['like', 'name', $this->name]);
+            }
+
             if ($this->date_start && $this->date_end) {
                 $ts1 = strtotime($this->date_start);
                 $ts2 = strtotime($this->date_end);
@@ -116,7 +123,7 @@
             } elseif ($this->date_start) {
                 $ts = strtotime($this->date_start);
                 $query->andWhere('date >= :TS', [":TS" => $ts]);
-            }  elseif ($this->date_end) {
+            } elseif ($this->date_end) {
                 $ts = strtotime($this->date_end);
                 $query->andWhere('date <= :TS', [":TS" => $ts]);
             }

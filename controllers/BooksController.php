@@ -7,6 +7,7 @@
     use app\models\Books;
     use app\models\BooksSearch;
     use yii\data\ActiveDataProvider;
+    use yii\helpers\ArrayHelper;
     use yii\helpers\VarDumper;
     use yii\web\Controller;
     use yii\web\NotFoundHttpException;
@@ -32,9 +33,9 @@
                 'rules' => [
                     // allow authenticated users
                     [
-                      'allow' => true,
+                      'allow'   => true,
                       'actions' => ['index', 'create', 'update', 'delete', 'view', 'search', 'upload'],
-                      'roles' => ['@'],
+                      'roles'   => ['@'],
                     ],
                     // everything else is denied
                 ],
@@ -131,6 +132,16 @@
                     $model->preview_image = $path;
                 }
                 $model->save();
+
+                $filterParams = $_GET;
+                if (ArrayHelper::keyExists('id', $filterParams)) {
+                    unset($filterParams['id']);
+                    if ($filterParams) {
+                        $url = ['search'] + $filterParams;
+                        return $this->redirect($url);
+                    }
+                }
+
                 return $this->redirect(['index']);
             } else {
                 return $this->render('update', [

@@ -36,7 +36,7 @@
       ]
     ]); ?>
 
-    <?= $form->field($model, 'author_id')->dropDownList(Authors::getAuthorsList()) ?>
+    <?= $form->field($model, 'author_id')->dropDownList(Authors::getAuthorsList(true)) ?>
 
     <div class="form-group">
         <?= Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>

@@ -26,9 +26,6 @@ phpunit.phar
 # local phpunit config
 /phpunit.xml
 
-# картинки юзеров
-/web/imgs/*
-
 # tests
 /tests
 

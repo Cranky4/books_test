@@ -2,6 +2,7 @@
 
     use yii\helpers\Html;
     use yii\grid\GridView;
+    use \yii\bootstrap\Modal;
 
     /* @var $this yii\web\View */
     /* @var $searchModel app\models\BooksSearch */
@@ -40,31 +41,27 @@
             'openOpacity' => true,
           ]
         ]);
+
         /**
-         * Вьюха книги в окне
+         * Модалка для просмотра книг
          */
-        echo newerton\fancybox\FancyBox::widget([
-          'target'  => 'a[rel=book_view]',
-          'helpers' => false,
-          'mouse'   => false,
-          'config'  => [
-            'type'       => 'iframe',
-            'fitToView'  => true,
-            'autoSize'   => false,
-            'closeClick' => false,
-            'arrows'     => false,
-          ],
+        Modal::begin([
+          'id'           => 'view-book-modal',
+          'header'       => '<h2>Просмотр</h2>',
         ]);
+
+        echo '<div class="content_holder"></div>';
+
+        Modal::end();
     ?>
 
-    <?=$this->render('_search',[
-          'model' => $searchModel,
-      ]);
-    ?>
+    <?= $this->render('_search', [
+      'model' => $searchModel,
+    ]); ?>
 
     <?= GridView::widget([
       'dataProvider' => $dataProvider,
-//      'filterModel'  => $searchModel,
+      //      'filterModel'  => $searchModel,
       'columns'      => [
         'id',
         'name',
@@ -86,18 +83,18 @@
         'date:datetime',
         'date_create:datetime',
         [
-          'class'   => 'yii\grid\ActionColumn',
+          'class'    => 'yii\grid\ActionColumn',
           'template' => '{view} {update} {delete}',
-          'buttons' => [
-            'view' => function ($url, $model) {
+          'buttons'  => [
+            'view'   => function ($url, $model) {
                 return Html::a('<span class="glyphicon glyphicon-eye-open"></span>', $url, [
                   'title' => "Просмотр",
                   'rel'   => 'book_view',
                 ]);
             },
             'update' => function ($url, $model) {
-                if($filterParams = $_GET) {
-                    $url .= "?".http_build_query($_GET);
+                if ($filterParams = $_GET) {
+                    $url .= "?" . http_build_query($_GET);
                 }
                 return Html::a('<span class="glyphicon glyphicon-pencil"></span>', $url, [
                   'title' => "Редактирование",
